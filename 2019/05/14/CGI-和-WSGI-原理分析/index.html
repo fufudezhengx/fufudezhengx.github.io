@@ -8,19 +8,19 @@
   <link rel="dns-prefetch" href="http://fufudezheng.github.io">
   <title>CGI 和 WSGI 原理分析 | fufudezhengx 的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="CGI 的由来假设我们用一个 main 函数来实现 web 服务端  main 函数使用 socket 接收到一个 http 请求后，把请求方法（GET，POST），请求路径（/path）等相关字段提取出来组成一个字典 然后根据这个字典中的请求方法，请求路径等信息完成一系列操作，比如读取 html 文件，查一下数据库，最后构造一段响应字符串并返回 main 函数再把响应字符串加上状态码和响应头等">
-<meta name="keywords" content="后端, Web, 网站开发, Developer, Programmer, 程序员, 开发者, 程序猿, javascript, 编程, 代码, 开源">
+  <meta name="description" content="CGI 的由来假设我们用一个 main 函数来实现 web 服务端">
+<meta name="keywords" content="CGI,WSGI,web">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CGI 和 WSGI 原理分析">
 <meta property="og:url" content="http://fufudezheng.github.io/2019/05/14/CGI-和-WSGI-原理分析/index.html">
 <meta property="og:site_name" content="fufudezhengx 的博客">
-<meta property="og:description" content="CGI 的由来假设我们用一个 main 函数来实现 web 服务端  main 函数使用 socket 接收到一个 http 请求后，把请求方法（GET，POST），请求路径（/path）等相关字段提取出来组成一个字典 然后根据这个字典中的请求方法，请求路径等信息完成一系列操作，比如读取 html 文件，查一下数据库，最后构造一段响应字符串并返回 main 函数再把响应字符串加上状态码和响应头等">
+<meta property="og:description" content="CGI 的由来假设我们用一个 main 函数来实现 web 服务端">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://fufudezheng.github.io/2019/05/14/CGI-和-WSGI-原理分析/wsgi-snake.png">
-<meta property="og:updated_time" content="2019-05-14T08:26:06.773Z">
+<meta property="og:updated_time" content="2019-05-14T08:54:01.361Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CGI 和 WSGI 原理分析">
-<meta name="twitter:description" content="CGI 的由来假设我们用一个 main 函数来实现 web 服务端  main 函数使用 socket 接收到一个 http 请求后，把请求方法（GET，POST），请求路径（/path）等相关字段提取出来组成一个字典 然后根据这个字典中的请求方法，请求路径等信息完成一系列操作，比如读取 html 文件，查一下数据库，最后构造一段响应字符串并返回 main 函数再把响应字符串加上状态码和响应头等">
+<meta name="twitter:description" content="CGI 的由来假设我们用一个 main 函数来实现 web 服务端">
 <meta name="twitter:image" content="http://fufudezheng.github.io/2019/05/14/CGI-和-WSGI-原理分析/wsgi-snake.png">
   
     <link rel="alternative" href="/atom.xml" title="fufudezhengx 的博客" type="application/atom+xml">
@@ -173,8 +173,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <img src="/2019/05/14/CGI-和-WSGI-原理分析/wsgi-snake.png" title="This is an example image">
+        <img src="/2019/05/14/CGI-和-WSGI-原理分析/wsgi-snake.png" title="Getting Started With WSGI">
 <h2 id="CGI-的由来"><a href="#CGI-的由来" class="headerlink" title="CGI 的由来"></a>CGI 的由来</h2><p>假设我们用一个 main 函数来实现 web 服务端</p>
+<a id="more"></a>
 <ol>
 <li>main 函数使用 socket 接收到一个 http 请求后，把请求方法（GET，POST），请求路径（/path）等相关字段提取出来组成一个字典</li>
 <li>然后根据这个字典中的请求方法，请求路径等信息完成一系列操作，比如读取 html 文件，查一下数据库，最后构造一段响应字符串并返回</li>
@@ -230,6 +231,25 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">CGI</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">WSGI</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">web</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -420,6 +440,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">CGI</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">WSGI</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">web</a>
+              </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Hexo</a>

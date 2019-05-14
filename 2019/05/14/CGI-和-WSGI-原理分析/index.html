@@ -6,20 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://fufudezheng.github.io">
-  <title>使用 Hexo 建立个人博客 | fufudezhengx 的博客</title>
+  <title>CGI 和 WSGI 原理分析 | fufudezhengx 的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="花了半天时间，用 Hexo 搭建了个人博客，甚是方便。简单记录一下搭建过程，方便其他同学参考。访问Hexo 官网： 快速、简洁且高效的博客框架 Step 0 准备工作 注册 Github 账号，注册 Git  新建 git 仓库，仓库名为 用户名.github.io   安装 Git  Git 教程参考：Git教程  测试：命令行行中输入 12&amp;gt; git --versiongit versi">
-<meta name="keywords" content="Hexo,blog">
+  <meta name="description" content="CGI 的由来假设我们用一个 main 函数来实现 web 服务端  main 函数使用 socket 接收到一个 http 请求后，把请求方法（GET，POST），请求路径（/path）等相关字段提取出来组成一个字典 然后根据这个字典中的请求方法，请求路径等信息完成一系列操作，比如读取 html 文件，查一下数据库，最后构造一段响应字符串并返回 main 函数再把响应字符串加上状态码和响应头等">
+<meta name="keywords" content="后端, Web, 网站开发, Developer, Programmer, 程序员, 开发者, 程序猿, javascript, 编程, 代码, 开源">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用 Hexo 建立个人博客">
-<meta property="og:url" content="http://fufudezheng.github.io/2019/05/06/deploy-hexo/index.html">
+<meta property="og:title" content="CGI 和 WSGI 原理分析">
+<meta property="og:url" content="http://fufudezheng.github.io/2019/05/14/CGI-和-WSGI-原理分析/index.html">
 <meta property="og:site_name" content="fufudezhengx 的博客">
-<meta property="og:description" content="花了半天时间，用 Hexo 搭建了个人博客，甚是方便。简单记录一下搭建过程，方便其他同学参考。访问Hexo 官网： 快速、简洁且高效的博客框架 Step 0 准备工作 注册 Github 账号，注册 Git  新建 git 仓库，仓库名为 用户名.github.io   安装 Git  Git 教程参考：Git教程  测试：命令行行中输入 12&amp;gt; git --versiongit versi">
+<meta property="og:description" content="CGI 的由来假设我们用一个 main 函数来实现 web 服务端  main 函数使用 socket 接收到一个 http 请求后，把请求方法（GET，POST），请求路径（/path）等相关字段提取出来组成一个字典 然后根据这个字典中的请求方法，请求路径等信息完成一系列操作，比如读取 html 文件，查一下数据库，最后构造一段响应字符串并返回 main 函数再把响应字符串加上状态码和响应头等">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-09T11:15:46.949Z">
+<meta property="og:image" content="http://fufudezheng.github.io/2019/05/14/CGI-和-WSGI-原理分析/wsgi-snake.png">
+<meta property="og:updated_time" content="2019-05-14T08:26:06.773Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用 Hexo 建立个人博客">
-<meta name="twitter:description" content="花了半天时间，用 Hexo 搭建了个人博客，甚是方便。简单记录一下搭建过程，方便其他同学参考。访问Hexo 官网： 快速、简洁且高效的博客框架 Step 0 准备工作 注册 Github 账号，注册 Git  新建 git 仓库，仓库名为 用户名.github.io   安装 Git  Git 教程参考：Git教程  测试：命令行行中输入 12&amp;gt; git --versiongit versi">
+<meta name="twitter:title" content="CGI 和 WSGI 原理分析">
+<meta name="twitter:description" content="CGI 的由来假设我们用一个 main 函数来实现 web 服务端  main 函数使用 socket 接收到一个 http 请求后，把请求方法（GET，POST），请求路径（/path）等相关字段提取出来组成一个字典 然后根据这个字典中的请求方法，请求路径等信息完成一系列操作，比如读取 html 文件，查一下数据库，最后构造一段响应字符串并返回 main 函数再把响应字符串加上状态码和响应头等">
+<meta name="twitter:image" content="http://fufudezheng.github.io/2019/05/14/CGI-和-WSGI-原理分析/wsgi-snake.png">
   
     <link rel="alternative" href="/atom.xml" title="fufudezhengx 的博客" type="application/atom+xml">
   
@@ -151,104 +153,54 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-deploy-hexo" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-CGI-和-WSGI-原理分析" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      使用 Hexo 建立个人博客
+      CGI 和 WSGI 原理分析
     </h1>
   
 
         
-        <a href="/2019/05/06/deploy-hexo/" class="archive-article-date">
-  	<time datetime="2019-05-06T12:38:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-06</time>
+        <a href="/2019/05/14/CGI-和-WSGI-原理分析/" class="archive-article-date">
+  	<time datetime="2019-05-14T12:38:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-14</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>花了半天时间，用 Hexo 搭建了个人博客，甚是方便。<br>简单记录一下搭建过程，方便其他同学参考。<br>访问Hexo 官网： <a href="https://hexo.io/" target="_blank" rel="noopener">快速、简洁且高效的博客框架</a></p>
-<h2 id="Step-0-准备工作"><a href="#Step-0-准备工作" class="headerlink" title="Step 0 准备工作"></a>Step 0 准备工作</h2><ul>
-<li><p>注册 Github 账号，<a href="https://github.com/join" target="_blank" rel="noopener">注册 Git</a></p>
+        <img src="/2019/05/14/CGI-和-WSGI-原理分析/wsgi-snake.png" title="This is an example image">
+<h2 id="CGI-的由来"><a href="#CGI-的由来" class="headerlink" title="CGI 的由来"></a>CGI 的由来</h2><p>假设我们用一个 main 函数来实现 web 服务端</p>
+<ol>
+<li>main 函数使用 socket 接收到一个 http 请求后，把请求方法（GET，POST），请求路径（/path）等相关字段提取出来组成一个字典</li>
+<li>然后根据这个字典中的请求方法，请求路径等信息完成一系列操作，比如读取 html 文件，查一下数据库，最后构造一段响应字符串并返回</li>
+<li>main 函数再把响应字符串加上状态码和响应头等字段，最后发送给客户端</li>
+</ol>
+<p>由此可知，main 函数每次处理请求都需要干一些重复性工作，比如提取请求头，加上状态码。<br>所以可以把这些工作封装起来变成一个函数，这就产生了 web server。<br>构造响应字符串的工作也可以封装起来变成一个函数，这就产生了 web app。</p>
+<p>假设 server 和 app 都是用 Python 写的，可以互相直接传递参数。<br>但我们想用 C 或者 C++ 实现一个性能更高的 server，或者使用 Java，Go 实现 app，这样兼容性就有问题了。<br>于是在 1993 年，美国国家超级计算机应用中心（NCSA）制定了一套标准，通用网关协议 CGI（Common Gateway Interface）。<br>只要 server 和 app 按照这套标准交流，就可以愉快的一起工作了。</p>
+<p>CGI 协议规定：</p>
+<ol>
+<li>server 接收到一个请求后，将提取出的字段写入环境变量，环境变量可以理解为全局变量</li>
+<li>然后 sever 主进程 fork 出一个新的子进程（通常称为 CGI 程序，即 app 程序）。<br>app 读取环境变量中的信息，构造响应字符串，然后通过标准输出把响应字符串返回给 server<br>注：server 和 app 通过标准输入和标准输出交换数据，这个不重要</li>
+</ol>
+<p>由此可以看出，每个请求都会创建子进程，开销非常大，无法支撑高并发<br>因此出现了 FastCGI 协议，用进程池来处理并发，当然也可以用线程池，比如 Java Servlet 服务器</p>
+<h2 id="WSGI-的由来"><a href="#WSGI-的由来" class="headerlink" title="WSGI 的由来"></a>WSGI 的由来</h2><p>这是专门为 Python Web 定义的一种协议<br>全称：Web 服务器网关接口（Python Web Server Gateway Interface）</p>
+<p>首先看 app 的示例：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">app</span><span class="params">(environ, start_response)</span>:</span></span><br><span class="line">    start_response(<span class="string">'200 OK'</span>, [(<span class="string">'Content-Type'</span>, <span class="string">'text/plain'</span>)])</span><br><span class="line">    response_body = <span class="string">'&lt;h1&gt;Hello world!&lt;/h1&gt;'</span></span><br><span class="line">    <span class="keyword">return</span> response_body</span><br></pre></td></tr></table></figure></p>
 <ul>
-<li>新建 git 仓库，仓库名为 <code>用户名.github.io</code></li>
+<li>server 调用 app 时传入 environ 和 start_response</li>
+<li>environ 是 server 传入的字典，包含了 http 请求的相关字段，这里借鉴了 CGI 环境变量的设计</li>
+<li>start_response 是 server 传入的函数，目的是把状态码和响应头回传给 server（我认为这里设计的太复杂，可以舍弃 start_response，直接把状态码，响应头和响应体一起返回）</li>
+<li>response_body 是 html 格式的字符串，可以从静态文件中读取。</li>
+<li>也可以调用其他函数生成更复杂的内容，比如根据路由调用对应的处理函数，这时候 app 就变成了中间件（Middleware）</li>
 </ul>
-</li>
-<li><p>安装 Git</p>
-<ul>
-<li><p>Git 教程参考：<a href="https://link.zhihu.com/?target=http%3A//www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000" target="_blank" rel="noopener">Git教程</a></p>
-</li>
-<li><p>测试：命令行行中输入</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; git --version</span><br><span class="line">git version 2.9.0.windows.1</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>安装 Node.js</p>
-<ul>
-<li><p>下载地址：<a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">Download | Node.js</a>， 安装 Node.js 时会安装 npm</p>
-</li>
-<li><p>测试：命令行行中输入</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; node -v</span><br><span class="line">v8.7.0</span><br><span class="line">&gt; npm -v</span><br><span class="line">5.4.2</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>安装 Hexo</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="Step-1-博客初始化"><a href="#Step-1-博客初始化" class="headerlink" title="Step 1 博客初始化"></a>Step 1 博客初始化</h2><ul>
-<li><p>初始化，即新建一个文件夹存放博客相关文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo init blog</span><br><span class="line"><span class="comment"># blog 就是新建的文件夹名称</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="Step-2-新建博客"><a href="#Step-2-新建博客" class="headerlink" title="Step 2 新建博客"></a>Step 2 新建博客</h2><ul>
-<li><p>新建一篇博客</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; hexo new <span class="string">"my first blog"</span></span><br><span class="line"><span class="comment"># 注意：博客名称需要加上双引号</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>执行成功后，在 <code>sources/_posts</code> 文件夹下会出现一个 MD 文件</p>
-</li>
-<li><p>使用 MD 语法编辑这个文件</p>
-</li>
-</ul>
-<h2 id="Step-3-生成网页文件"><a href="#Step-3-生成网页文件" class="headerlink" title="Step 3 生成网页文件"></a>Step 3 生成网页文件</h2><ul>
-<li><p>MD 文件生成 HTML 文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; hexo generate</span><br><span class="line"><span class="comment"># 或者简写为 hexo g</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="Step-4-本地测试"><a href="#Step-4-本地测试" class="headerlink" title="Step 4 本地测试"></a>Step 4 本地测试</h2><ul>
-<li><p>在本机启动服务器，通过浏览器查看博客效果，默认地址：<code>localhost:4000</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; hexo server</span><br><span class="line"><span class="comment"># 或者简写为 hexo s</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>修改 MD 文件后，可以直接刷新网页，查看效果</p>
-</li>
-</ul>
-<h2 id="Step-5-部署到-GitHub"><a href="#Step-5-部署到-GitHub" class="headerlink" title="Step 5 部署到 GitHub"></a>Step 5 部署到 GitHub</h2><ul>
-<li><p>安装 Git 部署插件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>打开博客根目录下的 <code>_config.yml</code></p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span> </span><br><span class="line"><span class="attr">  type:</span> <span class="string">git</span></span><br><span class="line"><span class="attr">  repo:</span> <span class="string">&lt;这里填入你之前在GitHub上创建仓库的完整路径，记得加上</span> <span class="string">.git&gt;</span></span><br><span class="line"><span class="attr">  branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>执行部署</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; hexo clean </span><br><span class="line">&gt; hexo generate</span><br><span class="line">&gt; hexo deploy</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="更多操作"><a href="#更多操作" class="headerlink" title="更多操作"></a>更多操作</h2><h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><ul>
-<li><p>选择喜欢的主题：<a href="https://hexo.io/themes/" target="_blank" rel="noopener">Themes</a></p>
-</li>
-<li><p>下载主题，在博客根目录下面执行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/litten/hexo-theme-yilia themes/yilia</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>更改博客根目录下的 <code>_config.yml</code></p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Extensions</span></span><br><span class="line"><span class="comment">## Plugins: https://hexo.io/plugins/</span></span><br><span class="line"><span class="comment">## Themes: https://hexo.io/themes/</span></span><br><span class="line"><span class="comment"># theme: landscape</span></span><br><span class="line"><span class="attr">theme:</span> <span class="string">yilia</span></span><br></pre></td></tr></table></figure>
-<p>​</p>
-</li>
-</ul>
-<p>更多信息，请查看 <a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">官方文档</a></p>
+<p>注：WSGI 规定 app 必须是一个可调用的对象，所以 app 也可以是一个实现了 <code>__call__</code> 方法的类，例如：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">App</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, environ, start_response)</span>:</span></span><br><span class="line">        start_response(<span class="string">'200 OK'</span>, [(<span class="string">'Content-Type'</span>, <span class="string">'text/plain'</span>)])</span><br><span class="line">        response_body = <span class="string">'&lt;h1&gt;Hello world!&lt;/h1&gt;'</span></span><br><span class="line">        <span class="keyword">return</span> response_body</span><br></pre></td></tr></table></figure></p>
+<p>再看 server 的示例：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    host, port = <span class="string">'localhost'</span>, <span class="number">9000</span></span><br><span class="line">    server = WSGIServer(host, port, app)</span><br><span class="line">    server.run()</span><br></pre></td></tr></table></figure></p>
+<p>创建 server 的时候将 app 传入，当接受到请求后，再调用 app(environ, start_response) 生成响应体，然后组合响应体和响应头，返回给客户端</p>
+<p>完整代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> List</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">log</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    用这个 log 替代 print</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    print(*args, **kwargs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WSGIServer</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, host: str, port: int, app: callable)</span>:</span></span><br><span class="line">        self.host = host</span><br><span class="line">        self.port = port</span><br><span class="line">        self.app = app</span><br><span class="line"></span><br><span class="line">        self.status = <span class="string">''</span></span><br><span class="line">        self.response_headers = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">start_response</span><span class="params">(self, status: str, response_headers: List[tuple])</span>:</span></span><br><span class="line">        self.status = status</span><br><span class="line">        self.response_headers = response_headers</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">environ_from_request</span><span class="params">(request: str)</span>:</span></span><br><span class="line">        <span class="comment"># 构造符合 CGI 风格的字典，这里只用两个字段作为例子，完整字段请查看下面的链接</span></span><br><span class="line">        <span class="comment"># https://www.python.org/dev/peps/pep-0333/#environ-variables</span></span><br><span class="line">        parts = request.split()</span><br><span class="line">        env = &#123;</span><br><span class="line">            <span class="string">'wsgi.version'</span>: (<span class="number">1</span>, <span class="number">0</span>),</span><br><span class="line">            <span class="string">'REQUEST_METHOD'</span>: parts[<span class="number">0</span>],</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> env</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">response_from_request</span><span class="params">(self, request: str)</span>:</span></span><br><span class="line">        environ = self.environ_from_request(request)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 传入的 start_response 函数会将状态码和响应头传回 server</span></span><br><span class="line">        response_body = self.app(environ, self.start_response)</span><br><span class="line"></span><br><span class="line">        response = <span class="string">'HTTP/1.1 &#123;status&#125;\n&#123;response_headers&#125;\n\n&#123;response_body&#125;'</span>.format(</span><br><span class="line">            status=self.status,</span><br><span class="line">            response_headers=self.response_headers,</span><br><span class="line">            response_body=response_body,</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">return</span> response.encode()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        log(<span class="string">'WSGI server: waiting request...'</span>)</span><br><span class="line">        <span class="keyword">with</span> socket.socket() <span class="keyword">as</span> s:</span><br><span class="line">            s.bind((self.host, self.port))</span><br><span class="line">            <span class="comment"># 无限循环来处理请求</span></span><br><span class="line">            <span class="comment"># 监听 接受 读取请求数据 解码成字符串</span></span><br><span class="line">            s.listen(<span class="number">5</span>)</span><br><span class="line">            <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">                connection, address = s.accept()</span><br><span class="line">                <span class="comment"># 这里只读取了 1024 字节的内容, 应该用一个循环全部读取</span></span><br><span class="line">                <span class="comment"># 但现在我们不用考虑那么多</span></span><br><span class="line">                request = connection.recv(<span class="number">1024</span>)</span><br><span class="line">                request = request.decode()</span><br><span class="line">                log(<span class="string">'ip 和 request, &#123;&#125;\n&#123;&#125;'</span>.format(address, request))</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 因为 chrome 会发送空请求导致 split 得到空 list</span></span><br><span class="line">                <span class="comment"># 所以这里先判断一下 split 得到的数据的长度</span></span><br><span class="line">                parts = request.split()</span><br><span class="line">                <span class="keyword">if</span> len(parts) &gt; <span class="number">0</span>:</span><br><span class="line">                    response = self.response_from_request(request)</span><br><span class="line">                    connection.sendall(response)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    log(<span class="string">"接收到了一个空请求"</span>)</span><br><span class="line">                <span class="comment"># 处理完请求, 关闭连接</span></span><br><span class="line">                connection.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">app</span><span class="params">(environ: dict, start_response: callable)</span>:</span></span><br><span class="line">    start_response(<span class="string">'200 OK'</span>, [(<span class="string">'Content-Type'</span>, <span class="string">'text/plain'</span>)])</span><br><span class="line">    <span class="comment"># 从 environ 字典中提取所需字段，构造复杂的 html</span></span><br><span class="line">    response_body = <span class="string">'&lt;h1&gt;Hello world! REQUEST_METHOD: &#123;&#125;&lt;/h1&gt;'</span>.format(environ.get(<span class="string">'REQUEST_METHOD'</span>, <span class="string">''</span>))</span><br><span class="line">    <span class="keyword">return</span> response_body</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    host, port = <span class="string">'localhost'</span>, <span class="number">9000</span></span><br><span class="line">    server = WSGIServer(host, port, app)</span><br><span class="line">    server.run()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure></p>
 
       
 
@@ -278,21 +230,6 @@
     <div class="article-info article-info-index">
       
       
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">blog</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
       
 
       
@@ -343,7 +280,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://fufudezheng.github.io/2019/05/06/deploy-hexo/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://fufudezheng.github.io/2019/05/14/CGI-和-WSGI-原理分析/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -357,15 +294,11 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/05/14/CGI-和-WSGI-原理分析/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          CGI 和 WSGI 原理分析
-        
-      </div>
-    </a>
   
+    <a href="/2019/05/06/deploy-hexo/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">使用 Hexo 建立个人博客</div>
+      <i class="icon-circle-right"></i>
+    </a>
   
 </nav>
 

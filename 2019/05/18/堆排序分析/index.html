@@ -6,19 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://fufudezheng.github.io">
-  <title>fufudezhengx 的博客</title>
+  <title>堆排序分析 | fufudezhengx 的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Web 开发者，热爱编程！">
-<meta name="keywords" content="后端, Web, 网站开发, Developer, Programmer, 程序员, 开发者, 程序猿, javascript, 编程, 代码, 开源">
-<meta property="og:type" content="website">
-<meta property="og:title" content="fufudezhengx 的博客">
-<meta property="og:url" content="http://fufudezheng.github.io/index.html">
+  <meta name="description" content="堆排序复杂度堆排序的时间复杂度为 O(nlgn)堆排序的空间复杂度为 O(1)，是一种原地排序 堆的数据结构">
+<meta name="keywords" content="算法,排序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="堆排序分析">
+<meta property="og:url" content="http://fufudezheng.github.io/2019/05/18/堆排序分析/index.html">
 <meta property="og:site_name" content="fufudezhengx 的博客">
-<meta property="og:description" content="Web 开发者，热爱编程！">
+<meta property="og:description" content="堆排序复杂度堆排序的时间复杂度为 O(nlgn)堆排序的空间复杂度为 O(1)，是一种原地排序 堆的数据结构">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://fufudezheng.github.io/2019/05/18/堆排序分析/heap_sort.jpeg">
+<meta property="og:updated_time" content="2019-05-21T09:22:25.192Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="fufudezhengx 的博客">
-<meta name="twitter:description" content="Web 开发者，热爱编程！">
+<meta name="twitter:title" content="堆排序分析">
+<meta name="twitter:description" content="堆排序复杂度堆排序的时间复杂度为 O(nlgn)堆排序的空间复杂度为 O(1)，是一种原地排序 堆的数据结构">
+<meta name="twitter:image" content="http://fufudezheng.github.io/2019/05/18/堆排序分析/heap_sort.jpeg">
   
     <link rel="alternative" href="/atom.xml" title="fufudezhengx 的博客" type="application/atom+xml">
   
@@ -150,16 +153,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-堆排序分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-堆排序分析" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/18/堆排序分析/">堆排序分析</a>
+    <h1 class="article-title" itemprop="name">
+      堆排序分析
     </h1>
   
 
@@ -174,12 +175,48 @@
       
         <p><img src="/2019/05/18/堆排序分析/heap_sort.jpeg" width="800" height="430" alt="Heap Sort" title="Heap Sort"></p>
 <h2 id="堆排序复杂度"><a href="#堆排序复杂度" class="headerlink" title="堆排序复杂度"></a>堆排序复杂度</h2><p>堆排序的时间复杂度为 O(nlgn)<br>堆排序的空间复杂度为 O(1)，是一种原地排序</p>
-<h2 id="堆的数据结构"><a href="#堆的数据结构" class="headerlink" title="堆的数据结构"></a>堆的数据结构</h2>
-        
-          <a class="article-more-a" href="/2019/05/18/堆排序分析/#more">more >></a>
-        
+<h2 id="堆的数据结构"><a href="#堆的数据结构" class="headerlink" title="堆的数据结构"></a>堆的数据结构</h2><a id="more"></a>
+<p>堆数据结构可以被视为完全二叉树<br>完全二叉树(Complete Binary Tree)： 每层结点都完全填满，在最后一层上如果不是满的，则只缺少右边的若干结点</p>
+<p>假设堆结构由数组（A）来表示，因此具有两个属性：</p>
+<ol>
+<li>数组长度 = length(A)</li>
+<li>数组中堆的长度 = heap_size(A)，两个不相等是因为数组后面的元素可以不属于堆结构</li>
+<li>树的根是第一个元素 A[0]</li>
+</ol>
+<h2 id="堆的性质"><a href="#堆的性质" class="headerlink" title="堆的性质"></a>堆的性质</h2><p>给定某个节点的下标 i，其父节点 parent(i) 下标为 (i / 2)，结果取整<br>左节点 left(i) 下标为 (2i + 1)<br>右节点 right(i) 下标为 (2i + 2)</p>
+<p>二叉堆分为两种：<br>最大堆：除了根节点以外，每个节点都小于父节点，即 parent(i) &gt;= A[i]，根节点是堆的最大元素<br>最小堆：除了根节点以外，每个节点都大于父节点，即 parent(i) &lt;= A[i]，根节点是堆的最小元素</p>
+<h2 id="实现堆排序"><a href="#实现堆排序" class="headerlink" title="实现堆排序"></a>实现堆排序</h2><h3 id="关键子函数1：max-heapify"><a href="#关键子函数1：max-heapify" class="headerlink" title="关键子函数1：max_heapify"></a>关键子函数1：max_heapify</h3><p>这个子函数主要用来保持堆的性质，调用该函数时需要保证节点 i 的左右二叉树都是最大堆。<br>如果 <code>array[index]</code> 小于子女，就让其下降，使以 <code>array[index]</code> 为根的子树成为最大堆。<br>时间复杂度为：O(lgn)<br>函数如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">max_heapfiy</span><span class="params">(array: List[int], index: int, heap_size: int)</span>:</span></span><br><span class="line">    left = index * <span class="number">2</span> + <span class="number">1</span></span><br><span class="line">    right = index * <span class="number">2</span> + <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    largest = index</span><br><span class="line">    <span class="keyword">if</span> left &lt; heap_size <span class="keyword">and</span> array[left] &gt; array[largest]:</span><br><span class="line">        largest = left</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> right &lt; heap_size <span class="keyword">and</span> array[right] &gt; array[largest]:</span><br><span class="line">        largest = right</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> largest != index:</span><br><span class="line">        _exchange(array, largest, index)</span><br><span class="line">        max_heapfiy(array, largest, heap_size)</span><br></pre></td></tr></table></figure></p>
+<h3 id="关键子函数2：build-max-heap"><a href="#关键子函数2：build-max-heap" class="headerlink" title="关键子函数2：build_max_heap"></a>关键子函数2：build_max_heap</h3><p>该函数可以自底向上建立一个最大堆。<br>数组 A 的所有叶子节点为 <code>A[length // 2: length]</code>，显然所有叶子节点都是只含有一个元素的最大堆。<br>因此可以从最后一个非叶子节点开始使用 max_heapify 函数调整，一直循环到根节点，这样就建立了一个最大堆。<br>时间复杂度为：O(n)<br>函数如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">build_max_heap</span><span class="params">(array: List[int])</span>:</span></span><br><span class="line">    heap_size = len(array)</span><br><span class="line">    <span class="comment"># 从倒数第一个非叶子结点开始建立大根堆</span></span><br><span class="line">    ran = list(range(len(array) // <span class="number">2</span>))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> ran[::<span class="number">-1</span>]:</span><br><span class="line">        <span class="comment"># 对所有非叶子结点进行堆的调整</span></span><br><span class="line">        max_heapfiy(array, i, heap_size)</span><br></pre></td></tr></table></figure></p>
+<h3 id="堆排序主函数：heap-sort"><a href="#堆排序主函数：heap-sort" class="headerlink" title="堆排序主函数：heap_sort"></a>堆排序主函数：heap_sort</h3><p>升序则采用最大堆；降序则采用最小堆</p>
+<p>假设现在按照升序排列<br>第一步：输入 n 个元素的数组 A，建立最大堆，所以根元素就是当前数组的最大值<br>第二步：交换根元素和数组的最后一个元素，所以最大值就排到最后一个了<br>第三步：此时根元素违背了堆的性质，所以使用 max_heapfiy 在 <code>A[0: n - 1]</code> 中重新构造最大堆<br>第四步：此时根元素又是当前堆的最大值，然后重复第二步和第三步，一直到堆的大小降到 0</p>
+<p>函数如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">heap</span><span class="params">(array: List[int])</span>:</span></span><br><span class="line">    build_heap(array)</span><br><span class="line"></span><br><span class="line">    ran = list(range(len(array)))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> ran[::<span class="number">-1</span>]:</span><br><span class="line">        _exchange(array, <span class="number">0</span>, i)</span><br><span class="line">        heap_size = i</span><br><span class="line">        max_heapfiy(array, <span class="number">0</span>, heap_size)</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>参考书籍：《算法导论（原书第3版）》</p>
+</blockquote>
+
       
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
       
     </div>
     <div class="article-info article-info-index">
@@ -203,16 +240,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/05/18/堆排序分析/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://fufudezheng.github.io/2019/05/18/堆排序分析/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2019/05/14/CGI-和-WSGI-原理分析/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">CGI 和 WSGI 原理分析</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -232,174 +328,14 @@
 
 
 
-
   
-    <article id="post-CGI-和-WSGI-原理分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/14/CGI-和-WSGI-原理分析/">CGI 和 WSGI 原理分析</a>
-    </h1>
   
 
-        
-        <a href="/2019/05/14/CGI-和-WSGI-原理分析/" class="archive-article-date">
-  	<time datetime="2019-05-14T12:38:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <img src="/2019/05/14/CGI-和-WSGI-原理分析/wsgi-snake.png" title="Getting Started With WSGI">
-<h2 id="CGI-的由来"><a href="#CGI-的由来" class="headerlink" title="CGI 的由来"></a>CGI 的由来</h2><p>假设我们用一个 main 函数来实现 web 服务端</p>
-        
-          <a class="article-more-a" href="/2019/05/14/CGI-和-WSGI-原理分析/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">CGI</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">WSGI</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">web</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/05/14/CGI-和-WSGI-原理分析/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-deploy-hexo" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/06/deploy-hexo/">使用 Hexo 建立个人博客</a>
-    </h1>
   
 
-        
-        <a href="/2019/05/06/deploy-hexo/" class="archive-article-date">
-  	<time datetime="2019-05-06T12:38:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-06</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="/2019/05/06/deploy-hexo/hexo-cover.png" width="800" height="474" alt="Hexo" title="Hexo"></p>
-<p>花了半天时间，用 Hexo 搭建了个人博客，甚是方便。<br>简单记录一下搭建过程，方便其他同学参考。<br>访问Hexo 官网： <a href="https://hexo.io/" target="_blank" rel="noopener">快速、简洁且高效的博客框架</a></p>
-        
-          <a class="article-more-a" href="/2019/05/06/deploy-hexo/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">blog</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/05/06/deploy-hexo/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
+
   
 
 
@@ -422,8 +358,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
